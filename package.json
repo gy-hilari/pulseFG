@@ -1,0 +1,48 @@
+{
+  "name": "pulse-fg",
+  "version": "0.1.0",
+  "private": true,
+  "main": "public/electron.js",
+  "homepage": "./",
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "electron-is-dev": "^1.1.0",
+    "electron-window-state": "^5.0.3",
+    "radium": "^0.26.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.1",
+    "react-vis": "^1.11.7"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "watch": "set ELECTRON_START_URL=http://localhost:3000 && nodemon --exec electron .",
+    "preelectron-pack": "npm run build",
+    "postinstall": "electron-builder install-app-deps",
+    "electron-pack": "electron-builder -w zip"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "electron": "^7.1.11",
+    "electron-builder": "^22.4.1"
+  }
+}
