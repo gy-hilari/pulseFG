@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
-import PulseGraph from './components/pulseGraph/pulseGraph';
+import SceneManager from './containers/sceneManager/sceneManager';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <PulseGraph/>
+        <SceneManager/>
       </div>
     );
   };

@@ -227,4 +227,70 @@ promiseIpc.on('test', () => {
     });
 });
 
+promiseIpc.on('/comp', (ping) => {
+    console.log(ping.message);
+    return new Promise((resolve, reject) => {
+        GetCompendiums().then((res) => {
+            resolve(res);
+        });
+    });
+})
+
+promiseIpc.on('/comp/create', (form) => {
+    return new Promise((resolve, reject) => {
+        CreateCompendium(form).then((res) => {
+            GetCompendiums().then((res) => {
+                resolve(res);
+            });
+        }).catch((err) => {
+            GetCompendiums().then((res) => {
+                resolve(res);
+            });
+        });
+    });
+})
+
+//#endregion
+
+//#region API FUNCTIONS
+
+function GetCompendiums() {
+    return new Promise((resolve, reject) => {
+        db.serialize(() => {
+            db.all(`SELECT _id as id, name, createdAt FROM comp ORDER BY createdAt DESC`, (err, comps) => {
+                if (err) reject(err);
+                resolve(comps);
+            });
+        });
+    });
+}
+
+function CreateCompendium(form) {
+    return new Promise((resolve, reject) => {
+        if (!form.name) reject('Invalid form!');
+        if (form.name) db.serialize(() => {
+            let stmt = db.prepare(
+                `INSERT INTO comp (
+                    _id,
+                    name,
+                    createdAt
+                )
+                VALUES (
+                    $id,
+                    $name,
+                    $createdAt
+                )`
+            );
+            let compId = uniqid('cmp_');
+            stmt.run({
+                $id: compId,
+                $name: form.name,
+                $createdAt: new Date(Date.now()).toISOString()
+            });
+            stmt.finalize();
+            resolve(`Compendium [${compId}] created successfully!`);
+        });
+    });
+}
+
 //#endregion

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import Aux from '../../hoc/Auxi';
 import './pulseGraph.css';
 import '../../../node_modules/react-vis/dist/style.css';
-import Radium, { Style } from 'radium';
 import { XYPlot, XAxis, YAxis, LineMarkSeries, makeHeightFlexible, makeWidthFlexible, Hint, Crosshair } from 'react-vis';
 
 const FlexPlot = makeWidthFlexible(XYPlot);
@@ -40,7 +40,8 @@ class PulseGraph extends Component {
 
     render() {
         return (
-            <div>
+            <Aux>
+
                 <button onClick={() =>
                     this.setState({
                         data: this.pushData(this.state.data)
@@ -88,9 +89,9 @@ class PulseGraph extends Component {
                         }
                     </FlexPlot>
                 </div>
-            </div>
+            </Aux>
         );
     }
 }
 
-export default Radium(PulseGraph);
+export default PulseGraph;
