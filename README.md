@@ -3,6 +3,7 @@
 - In this project, the electron.js file has to import files "old school" / non ES6:
     - [module.exports in NodeJS](https://stackabuse.com/how-to-use-module-exports-in-node-js/)
     - [vanilla vs. ES6 classes in NodeJS](https://m.dotdev.co/how-to-use-classes-in-node-js-with-no-pre-compilers-and-why-you-should-ad9ffd63817d)
+    - [more import / export syntax](https://www.sitepoint.com/understanding-module-exports-exports-node-js/)
 - Routes are written with [electron-promise-ipc](https://www.npmjs.com/package/electron-promise-ipc); The API routes are not exported as functions, they are written as properties of the promiseIpc object and stored in a class:
     ```javascript
     function Router(db) {
@@ -25,3 +26,26 @@
     const Router = router.Router;
     const routes = new Router(db);
     ```
+---
+## React Resources
+- Client-side, a lot of ES6 comes into play, so remember to use arrow syntax to keep references to 'this' in order:
+    - [React this.setState binding error](https://stackoverflow.com/questions/31045716/react-this-setstate-is-not-a-function)
+- ES6 Imports / Exports are useful here as well to keep API calls and files light-weight and organized:
+    ```javascript
+    // API File
+    export const getComps = (callback) => {
+        window.api.promise('/comp', {message: 'getting compendiums...'}, (res) => {
+            callback(res);
+        });
+    }
+
+    export const createComp = (form, callback) =>{
+        window.api.promise('/comp/create', form, (res) => {
+            callback(res);
+        });
+    }
+
+    // Component(s):
+    import * as API from '../../../containers/compendiums/compendiumsAPI';
+    ```
+    - [ES6 Import / Export syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import)
