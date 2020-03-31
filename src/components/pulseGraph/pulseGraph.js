@@ -12,6 +12,10 @@ class PulseGraph extends Component {
         focusValue: false,
     }
 
+    componentDidMount() {
+        this.ipcTest();
+    }
+
     generateData(rowCount) {
         return [...new Array(rowCount)].map((row, idx) => ({
             x: idx,
@@ -28,6 +32,12 @@ class PulseGraph extends Component {
         return arr;
     };
 
+    ipcTest() {
+        window.api.promise('test', { message: "Getting image dir..." }, (res) => {
+            console.log(res);
+        });
+    }
+
     render() {
         return (
             <div>
@@ -39,10 +49,7 @@ class PulseGraph extends Component {
                     Update
                 </button>
                 <div className="graph-wrap">
-                    <FlexPlot
-                        height={300}
-                    // onMouseLeave={() => this.setState({ focusValue: false })}
-                    >
+                    <FlexPlot height={300}>
                         <XAxis
                             title="X Axis"
                             style={{
