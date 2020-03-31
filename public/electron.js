@@ -68,49 +68,49 @@ function createWindow() {
     let state = windowStateKeeper({
         defaultWidth: 800, defaultHeight: 600
     })
-    
+
     mainWindow = isDev ?
-    new BrowserWindow({
-        x: state.x, y: state.y,
-        width: state.width, height: state.height,
-        minWidth: 700, minHeight: 600,
-        webPreferences: {
-            nodeIntegration: false,
-            contextIsolation: true,
-            enableRemoteModule: false,
-            webSecurity: false,
-            preload: path.join(__dirname, "/preload.js")
-        },
-        
-        frame: true
-    })
-    :
-    new BrowserWindow({
-        x: state.x, y: state.y,
-        width: state.width, height: state.height,
-        minWidth: 700, minHeight: 600,
-        webPreferences: {
-            nodeIntegration: false,
-            contextIsolation: true,
-            enableRemoteModule: false,
-            devTools: false,
-            preload: path.join(__dirname, "/preload.js")
-        },
-        
-        frame: true
-    });
-    
+        new BrowserWindow({
+            x: state.x, y: state.y,
+            width: state.width, height: state.height,
+            minWidth: 700, minHeight: 600,
+            webPreferences: {
+                nodeIntegration: false,
+                contextIsolation: true,
+                enableRemoteModule: false,
+                webSecurity: false,
+                preload: path.join(__dirname, "/preload.js")
+            },
+
+            frame: true
+        })
+        :
+        new BrowserWindow({
+            x: state.x, y: state.y,
+            width: state.width, height: state.height,
+            minWidth: 700, minHeight: 600,
+            webPreferences: {
+                nodeIntegration: false,
+                contextIsolation: true,
+                enableRemoteModule: false,
+                devTools: false,
+                preload: path.join(__dirname, "/preload.js")
+            },
+
+            frame: true
+        });
+
     const startUrl = isDev ? process.env.ELECTRON_START_URL : url.format({
         pathname: path.join(__dirname, '/../build/index.html'),
         protocol: 'file:',
         slashes: true
     });
     mainWindow.loadURL(startUrl);
-    
+
     if (isDev) mainWindow.webContents.openDevTools();
-    
+
     state.manage(mainWindow);
-    
+
     mainWindow.on('closed', () => mainWindow = null);
 }
 
@@ -145,6 +145,46 @@ function CheckOrCreateModels() {
                 tableName: 'comp',
                 createdAt: { foreignKey: false, string: 'TEXT NOT NULL' },
                 name: { foreignKey: false, string: 'TEXT NOT NULL' }
+            },
+            {
+                tableName: 'session',
+                createdAt: { foreignKey: false, string: 'TEXT NOT NULL' },
+                name: { foreignKey: false, string: 'TEXT NOT NULL' },
+                unitOfMeasure: { foreignKey: false, string: 'TEXT NOT NULL' },
+                comp: { foreignKey: false, string: 'TEXT NOT NULL' },
+                compKey: { foreignKey: true, string: 'FOREIGN KEY (comp) REFERENCES comp(_id)' }
+            },
+            {
+                tableName: 'pulsegraph',
+                createdAt: { foreignKey: false, string: 'TEXT NOT NULL' },
+                name: { foreignKey: false, string: 'TEXT NOT NULL' },
+                session: { foreignKey: false, string: 'TEXT NOT NULL' },
+                sessionKey: { foreignKey: true, string: 'FOREIGN KEY (session) REFERENCES session(_id)' }
+            },
+            {
+                tableName: 'match',
+                createdAt: { foreignKey: false, string: 'TEXT NOT NULL' },
+                name: { foreignKey: false, string: 'TEXT NOT NULL' },
+                result: { foreignKey: false, string: 'INT NOT NULL' },
+                session: { foreignKey: false, string: 'TEXT NOT NULL' },
+                sessionKey: { foreignKey: true, string: 'FOREIGN KEY (session) REFERENCES session(_id)' }
+            },
+            {
+                tableName: 'widget_parameter',
+                createdAt: { foreignKey: false, string: 'TEXT NOT NULL' },
+                title: { foreignKey: false, string: 'TEXT NOT NULL' },
+                imagePath: { foreignKey: false, string: 'TEXT' }, // IMAGES OPTIONAL
+                match: { foreignKey: false, string: 'TEXT NOT NULL' },
+                matchKey: { foreignKey: true, string: 'FOREIGN KEY (match) REFERENCES match(_id)' }
+            },
+            {
+                tableName: 'widget_notebox',
+                createdAt: { foreignKey: false, string: 'TEXT NOT NULL' },
+                title: { foreignKey: false, string: 'TEXT NOT NULL' },
+                text: { foreignKey: false, string: 'TEXT NOT NULL' },
+                imagePath: { foreignKey: false, string: 'TEXT' }, // IMAGES OPTIONAL
+                match: { foreignKey: false, string: 'TEXT NOT NULL' },
+                matchKey: { foreignKey: true, string: 'FOREIGN KEY (match) REFERENCES match(_id)' }
             }
         ];
 
@@ -183,7 +223,7 @@ function CheckOrCreateModels() {
 promiseIpc.on('test', () => {
     return new Promise((resolve, reject) => {
         console.log('IPC Reached main!');
-        resolve ('IPC Returned from main!');
+        resolve('IPC Returned from main!');
     });
 });
 
