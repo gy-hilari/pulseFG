@@ -18,9 +18,7 @@ const CompendiumList = (props) => {
                                         compContext.setComp(comp);
                                         props.setScene('comp');
                                     }}>  {`Name: ${comp.name}, Created: ${new Date(comp.createdAt).toLocaleString('en-US', { 'dateStyle': 'medium', 'timeStyle': 'short', 'hour12': 'false' })}`}</p>
-                                <p className="comp-delete" onClick={() => API.deleteComp(comp.id, (res) => props.update(res))}>
-                                    {`DELETE`}
-                                </p>
+                                <p className="comp-delete" onClick={() => API.deleteComp(comp.id, (res) => props.update(res))}>DELETE</p>
                             </div>
                         </Aux>
                     );

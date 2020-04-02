@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { CompContext } from '../../../containers/sceneManager/sceneManager';
 import Aux from '../../../hoc/Auxi';
 import * as API from '../../../containers/compendiums/compendiumsAPI';
+import Sessions from '../../../containers/sessions/sessions';
 import './compendiumView.css';
 
 const CompendiumView = (props) => {
@@ -38,6 +39,9 @@ const CompendiumView = (props) => {
                 </Aux>
             }
             <hr />
+            <Sessions
+                compId={compData.stateComp.id}
+            />
         </Aux>
     );
 }

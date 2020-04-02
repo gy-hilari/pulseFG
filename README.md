@@ -53,3 +53,4 @@
     - [Context API](https://reactjs.org/docs/context.html)
     - [Class vs. Function Usage](https://www.taniarascia.com/using-context-api-in-react/)
     - [Wes Bos Video Demo](https://www.youtube.com/watch?v=XLJN4JfniH4)
+    - [State in function components w/ Hooks](https://reactjs.org/docs/hooks-state.html)

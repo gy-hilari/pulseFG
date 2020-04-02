@@ -1,12 +1,5 @@
 function CompRoutes(router, controller) {
     this.controller = controller;
-    
-    router.on('test', () => {
-        return new Promise((resolve, reject) => {
-            console.log('IPC Reached main!');
-            resolve('IPC Returned from main!');
-        });
-    });
 
     router.on('/comp', (ping) => {
         console.log(ping.message);
@@ -25,7 +18,7 @@ function CompRoutes(router, controller) {
         });
     });
 
-    router.on('/comp/create', (form) => {
+    router.on('/comp/post', (form) => {
         return new Promise((resolve, reject) => {
             this.controller.CreateCompendium(form).then((res) => {
                 this.controller.GetCompendiums().then((res) => {

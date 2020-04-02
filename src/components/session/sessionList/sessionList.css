@@ -1,0 +1,14 @@
+.session-card{
+    display: block;
+}
+
+.session-text, .session-delete{
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0px 12px;
+    cursor: pointer;
+}
+
+.session-delete{
+    color: red;
+}
