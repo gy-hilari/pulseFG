@@ -15,6 +15,23 @@ Controller.prototype.GetCompendiums = function () {
     });
 }
 
+Controller.prototype.GetCompendiumById = function (compId) {
+    return new Promise((resolve, reject) => {
+        this.db.serialize(() => {
+            let stmt = this.db.prepare(
+                `SELECT _id as id, name
+                FROM comp WHERE id = $id
+                `);
+
+            stmt.get({ $id: compId }, (err, comp) => {
+                if (err) reject(err);
+                resolve(comp);
+            });
+            stmt.finalize();
+        });
+    })
+}
+
 Controller.prototype.CreateCompendium = function (form) {
     return new Promise((resolve, reject) => {
         if (!form.name) reject('Invalid form!');
@@ -50,6 +67,22 @@ Controller.prototype.DeleteCompendiumById = function (compId) {
             stmt.all({ $id: compId }, (err) => {
                 if (err) reject(err);
                 resolve(`Deleted compendium [${compId}]`);
+            });
+            stmt.finalize();
+        });
+    });
+}
+
+Controller.prototype.UpdateCompendiumById = function (form) {
+    return new Promise((resolve, reject) => {
+        this.db.serialize(() => {
+            let stmt = this.db.prepare(
+                ` UPDATE comp SET name = $name
+                WHERE _id = $id
+                `);
+            stmt.all({ $id: form.id, $name: form.name }, (err) => {
+                if (err) reject(err);
+                resolve(`Successfully edited comp [${form.id}] name to [${form.name}]`);
             });
             stmt.finalize();
         });

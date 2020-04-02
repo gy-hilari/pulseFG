@@ -21,7 +21,15 @@ function Router(db) {
                 resolve(res);
             });
         });
-    })
+    });
+
+    this.routes.on('/comp/id', (compId) => {
+        return new Promise((resolve, reject) => {
+            GetCompendiumById(id).then((res) => {
+                resolve(res);
+            }).catch((err) => reject(err));
+        });
+    });
 
     this.routes.on('/comp/create', (form) => {
         return new Promise((resolve, reject) => {
@@ -35,7 +43,7 @@ function Router(db) {
                 });
             });
         });
-    })
+    });
 
     this.routes.on('/comp/delete', (compId) => {
         return new Promise((resolve, reject) => {
@@ -49,7 +57,21 @@ function Router(db) {
                 });
             });
         });
-    })
+    });
+
+    this.routes.on('/comp/update', (form) => {
+        return new Promise((resolve, reject) => {
+            this.controller.UpdateCompendiumById(form).then((res) => {
+                this.controller.GetCompendiumById(form.id).then((res) => {
+                    resolve(res);
+                });
+            }).catch((err) => {
+                this.controller.GetCompendiumById(form.id).then((res) => {
+                    resolve(res);
+                });
+            });
+        });
+    });
 }
 
 module.exports = {

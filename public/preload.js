@@ -8,8 +8,10 @@ contextBridge.exposeInMainWorld(
             "toMain",
             "test",
             "/comp",
+            "/comp/id",
             "/comp/create",
-            "/comp/delete"
+            "/comp/delete",
+            "/comp/update"
         ];
         if (validChannels.includes(channel)) {
             promiseIpc.send(channel, data).then((res) => { func(res) });

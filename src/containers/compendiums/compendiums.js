@@ -25,6 +25,7 @@ class Compendiums extends Component {
         return (
             <Aux>
                 <button onClick={() => this.props.setScene('title')}>Go Back</button>
+                <hr/>
                 <h1>Compendiums</h1>
                 <hr />
                 <button onClick={() => {
