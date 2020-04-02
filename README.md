@@ -49,3 +49,7 @@
     import * as API from '../../../containers/compendiums/compendiumsAPI';
     ```
     - [ES6 Import / Export syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import)
+- React Context and State Management:
+    - [Context API](https://reactjs.org/docs/context.html)
+    - [Class vs. Function Usage](https://www.taniarascia.com/using-context-api-in-react/)
+    - [Wes Bos Video Demo](https://www.youtube.com/watch?v=XLJN4JfniH4)

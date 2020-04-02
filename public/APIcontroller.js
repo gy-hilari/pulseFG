@@ -43,6 +43,19 @@ Controller.prototype.CreateCompendium = function (form) {
     });
 }
 
+Controller.prototype.DeleteCompendiumById = function (compId) {
+    return new Promise((resolve, reject) => {
+        this.db.serialize(() => {
+            let stmt = this.db.prepare(`DELETE FROM comp WHERE _id = $id`);
+            stmt.all({ $id: compId }, (err) => {
+                if (err) reject(err);
+                resolve(`Deleted compendium [${compId}]`);
+            });
+            stmt.finalize();
+        });
+    });
+}
+
 module.exports = {
     Controller: Controller
 }

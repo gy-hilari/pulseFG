@@ -3,62 +3,20 @@ const windowStateKeeper = require('electron-window-state');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const isDev = require('electron-is-dev');
-
-const fs = require('fs');
-const { readdirSync } = require('fs');
-
 const path = require('path');
 const url = require('url');
-
-const sqlite3 = require('sqlite3').verbose();
-
-let mainWindow;
-
+const dbInitializer = require('./dbInitializer');
 const models = require('./APImodels');
 const router = require('./APIrouter');
 
+let mainWindow;
+
 //#region INITIALIZE DATABASE ENVIRONMENT 
 
-const dbDir = "pulsefgdata";
-const dbName = "pulsefg";
-if (!fs.existsSync('.' + `/${dbDir}/${dbName}.db`)) {
-    fs.mkdirSync('.' + `/${dbDir}`);
-    fs.createWriteStream('.' + `/${dbDir}/${dbName}.db`);
-}
-
-const imgDir = "images";
-if (!fs.existsSync('.' + `/${imgDir}`)) {
-    fs.mkdirSync('.' + `/${imgDir}`);
-}
-
-const getDirs = (path) => {
-    let dirs = {};
-    readdirSync(path, { withFileTypes: true })
-        .filter(dir => dir.isDirectory())
-        .map(dir => dirs[dir.name] = getFiles(dir.name));
-    return dirs;
-}
-
-const getFiles = (dir) => {
-    let validExtensions = [
-        ".jpg",
-        ".JPG",
-        ".jpeg",
-        ".png",
-        ".bmp"
-    ];
-    return readdirSync(`./images/${dir}`, { withFileTypes: true })
-        .filter(file => !file.isDirectory())
-        .filter(file => validExtensions.includes(path.extname(file.name)))
-        .map(file => file.name);
-}
-
-if (isDev) {
-    console.log(`Current image dir: ${path.resolve('./images')}`);
-    console.log(getDirs('./images'));
-}
-
-const db = new sqlite3.Database(path.join('.', `/${dbDir}/${dbName}.db`));
+const Initializer = dbInitializer.Initializer;
+const init = new Initializer();
+const db = init.initialize();
+if (isDev) init.logDirectories();
 
 //#endregion
 

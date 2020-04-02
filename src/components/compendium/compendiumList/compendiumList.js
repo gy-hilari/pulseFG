@@ -1,16 +1,27 @@
-import React, { Component } from 'react';
+import React, { useContext } from 'react';
+import { CompContext } from '../../../containers/sceneManager/sceneManager';
 import Aux from '../../../hoc/Auxi';
 import * as API from '../../../containers/compendiums/compendiumsAPI';
 import './compendiumList.css';
 
-const compendiumList = (props) => {
+const CompendiumList = (props) => {
+    const compContext = useContext(CompContext);
     return (
         <Aux>
             {
                 props.comps.map((comp, idx) => {
                     return (
                         <Aux key={comp.id}>
-                            <p>{`Name: ${comp.name}, Created At: ${comp.createdAt}`}</p>
+                            <div className="comp-card">
+                                <p className="comp-text"
+                                    onClick={() => {
+                                        compContext.setComp(comp);
+                                        props.setScene('comp');
+                                    }}>  {`Name: ${comp.name}, Created: ${new Date(comp.createdAt).toLocaleString('en-US', { 'dateStyle': 'medium', 'timeStyle': 'short', 'hour12': 'false' })}`}</p>
+                                <p className="comp-delete" onClick={() => API.deleteComp(comp.id, (res) => props.update(res))}>
+                                    {`DELETE`}
+                                </p>
+                            </div>
                         </Aux>
                     );
                 })
@@ -19,4 +30,4 @@ const compendiumList = (props) => {
     );
 }
 
-export default compendiumList;
+export default CompendiumList;

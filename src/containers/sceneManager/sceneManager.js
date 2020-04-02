@@ -3,15 +3,18 @@ import Aux from '../../hoc/Auxi';
 import './sceneManager.css';
 
 import Compendiums from '../compendiums/compendiums';
+import CompendiumView from '../../components/compendium/compendiumView/compendiumView';
+
+export const CompContext = React.createContext();
 
 class SceneManager extends Component {
     state = {
-        scene: 'title'
+        scene: 'title',
+        activeComp: null
     }
 
-    setScene = (sceneName) => {
-        this.setState({ scene: sceneName });
-    }
+    setScene = (sceneName) => this.setState({ scene: sceneName });
+    setComp = (comp) => { this.setState({ activeComp: comp }) };
 
     render() {
         return (
@@ -20,18 +23,22 @@ class SceneManager extends Component {
                     this.state.scene === 'title' &&
                     <Aux>
                         <h1>PulseFG</h1>
-                        <hr/>
+                        <hr />
                         <button onClick={() => {
-                            this.setScene('comp');
+                            this.setScene('comps');
                         }}>Start</button>
                     </Aux>
                 }
-                {
-                    this.state.scene === 'comp' &&
-                    <Compendiums
-                        setScene={this.setScene}
-                    />
-                }
+                <CompContext.Provider value={{ stateComp: this.state.activeComp, setComp: this.setComp, test: "test value" }}>
+                    {
+                        this.state.scene === 'comps' &&
+                        <Compendiums setScene={this.setScene} />
+                    }
+                    {
+                        this.state.scene === 'comp' &&
+                        <CompendiumView setScene={this.setScene}/>
+                    }
+                </CompContext.Provider>
             </Aux>
         );
     }

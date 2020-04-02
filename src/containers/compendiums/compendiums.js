@@ -18,9 +18,7 @@ class Compendiums extends Component {
     }
 
     initializeComps = () => API.getComps((res) => this.setState({ comps: res }));
-
     setCompData = (data) => this.setState({ comps: data });
-
     setAction = (action) => this.setState({ action: action });
 
     render() {
@@ -42,6 +40,8 @@ class Compendiums extends Component {
                 {
                     this.state.comps.length > 0 &&
                     <CompendiumList
+                        update={this.setCompData}
+                        setScene={this.props.setScene}
                         comps={this.state.comps}
                     />
                 }

@@ -36,6 +36,20 @@ function Router(db) {
             });
         });
     })
+
+    this.routes.on('/comp/delete', (compId) => {
+        return new Promise((resolve, reject) => {
+            this.controller.DeleteCompendiumById(compId).then((res) => {
+                this.controller.GetCompendiums().then((res) => {
+                    resolve(res);
+                });
+            }).catch((err) => {
+                this.controller.GetCompendiums().then((res) => {
+                    resolve(res);
+                });
+            });
+        });
+    })
 }
 
 module.exports = {

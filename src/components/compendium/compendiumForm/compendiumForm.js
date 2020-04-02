@@ -8,16 +8,17 @@ const compendiumForm = (props) => {
         <Aux>
             <input id="compendium-name" type="text" />
             <button onClick={() => {
-                if (/\S/.test(document.getElementById('compendium-name'))) {
+                if (/\S/.test(document.getElementById('compendium-name').value)) {
                     API.createComp(
                         {
                             name: document.getElementById('compendium-name').value
                         },
                         (res) => {
                             props.update(res);
+                            props.cancel();
                         });
                 }
-            }}>Create</button>
+        }}>Create</button>
             <button onClick={() => props.cancel()}>Cancel</button>
         </Aux>
     );

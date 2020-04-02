@@ -1,0 +1,14 @@
+.comp-card{
+    display: block;
+}
+
+.comp-text, .comp-delete{
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0px 12px;
+    cursor: pointer;
+}
+
+.comp-delete{
+    color: red;
+}
