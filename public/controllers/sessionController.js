@@ -20,6 +20,22 @@ SessionController.prototype.GetSessionsByCompId = function (compId) {
     });
 }
 
+SessionController.prototype.GetSessionById = function (sessionId) {
+    return new Promise((resolve, reject) => {
+        this.db.serialize(() => {
+            let stmt = this.db.prepare(
+                `SELECT _id as id, name, unitOfMeasure, createdAt
+                FROM session WHERE _id = $id
+                `);
+            stmt.get({ $id: sessionId }, (err, session) => {
+                if (err) reject(err);
+                resolve(session);
+            }); 
+            stmt.finalize();
+        });
+    });
+}
+
 SessionController.prototype.CreateSession = function (form) {
     return new Promise((resolve, reject) => {
         if (!form.name) reject('Invalid form');
@@ -74,6 +90,22 @@ SessionController.prototype.DeleteSessionByCompId = function (compId) {
         });
         stmt.finalize();
     })
+}
+
+SessionController.prototype.UpdateSessionNameById = function (form) {
+    return new Promise((resolve, reject) => {
+        this.db.serialize(() => {
+            let stmt = this.db.prepare(
+                ` UPDATE session SET name = $name
+                WHERE _id = $id
+                `);
+            stmt.all({ $id: form.sessionId, $name: form.name }, (err) => {
+                if (err) reject(err);
+                resolve(`Successfully edited session [${form.sessionId}] name to [${form.name}]`);
+            });
+            stmt.finalize();
+        });
+    });
 }
 
 module.exports = {

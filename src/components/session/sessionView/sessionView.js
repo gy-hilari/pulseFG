@@ -9,13 +9,33 @@ const SessionView = (props) => {
     const sessionData = useContext(SessionContext);
     const [sessionEdit, sessionEditMode] = useState(null);
 
+    const updateSessionName = () => {
+        API.updateSessionName(
+            { sessionId: sessionData.stateSession.id, name: document.getElementById('session-name').value },
+            (res) => refreshSession(res)
+        );
+    }
+
+    const refreshSession = (updatedSession) => {
+        sessionData.setSession(updatedSession);
+        sessionEditMode(null);
+    }
+
     return (
         <Aux>
             <button onClick={() => props.setScene('comp')}>Go Back</button>
             <hr />
             {
                 !sessionEdit &&
-                <h1>{sessionData.stateSession.name}</h1>
+                <h1 onDoubleClick={() => sessionEditMode('name')}>{sessionData.stateSession.name}</h1>
+            }
+            {
+                sessionEdit === "name" &&
+                <Aux>
+                    <input id="session-name" type="text" />
+                    <button onClick={() => { if (/\S/.test(document.getElementById('session-name').value)) updateSessionName(); }}>Confirm</button>
+                    <button onClick={() => sessionEditMode(null)}>Cancel</button>
+                </Aux>
             }
             <hr />
             <p>{`Measuring: ${sessionData.stateSession.unitOfMeasure}`}</p>
