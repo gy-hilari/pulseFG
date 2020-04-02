@@ -4,6 +4,7 @@ import './sceneManager.css';
 
 import Compendiums from '../compendiums/compendiums';
 import CompendiumView from '../../components/compendium/compendiumView/compendiumView';
+import SessionView from '../../components/session/sessionView/sessionView';
 
 export const CompContext = React.createContext();
 export const SessionContext = React.createContext();
@@ -33,19 +34,22 @@ class SceneManager extends Component {
                         }}>Start</button>
                     </Aux>
                 }
-                <CompContext.Provider value={{ stateComp: this.state.activeComp, setComp: this.setComp}}>
+                <CompContext.Provider value={{ stateComp: this.state.activeComp, setComp: this.setComp }}>
                     {
                         this.state.scene === 'comps' &&
                         <Compendiums setScene={this.setScene} />
                     }
                     {
                         this.state.scene === 'comp' &&
-                        <CompendiumView setScene={this.setScene} />
+                        <SessionContext.Provider value={{ stateSession: this.state.activeSession, setSession: this.setSession }}>
+                            <CompendiumView setScene={this.setScene} />
+                        </SessionContext.Provider>
                     }
                 </CompContext.Provider>
-                <SessionContext.Provider value={{ stateSession: this.state.activeSession, setSession: this.activeSession}}>
+                <SessionContext.Provider value={{ stateSession: this.state.activeSession, setSession: this.setSession }}>
                     {
-                        this.state.scene === 'sessions'
+                        this.state.scene === 'session' &&
+                        <SessionView setScene={this.setScene} />
                     }
                 </SessionContext.Provider>
             </Aux>

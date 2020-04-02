@@ -8,12 +8,9 @@ const FlexPlot = makeWidthFlexible(XYPlot);
 
 class PulseGraph extends Component {
     state = {
-        data: this.generateData(5),
+        data1: this.generateData(5),
+        data2: this.generateData(5),
         focusValue: false,
-    }
-
-    componentDidMount() {
-        this.ipcTest();
     }
 
     generateData(rowCount) {
@@ -32,19 +29,14 @@ class PulseGraph extends Component {
         return arr;
     };
 
-    ipcTest() {
-        window.api.promise('test', { message: "Getting image dir..." }, (res) => {
-            console.log(res);
-        });
-    }
-
     render() {
         return (
             <Aux>
 
                 <button onClick={() =>
                     this.setState({
-                        data: this.pushData(this.state.data)
+                        data1: this.pushData(this.state.data1),
+                        data2: this.pushData(this.state.data2)
                     })
                 }>
                     Update
@@ -61,7 +53,25 @@ class PulseGraph extends Component {
                         />
                         <YAxis title="Y Axis" />
                         <LineMarkSeries
-                            data={this.state.data}
+                            data={this.state.data1}
+                            lineStyle={{
+                                stroke: 'green'
+                            }}
+                            markStyle={{
+                                fill: 'green'
+                            }}
+                            animation={'gentle'}
+                            onNearestX={(datapoint, { event, innerX, index }) => {
+                                this.setState({ focusValue: datapoint });
+                            }}
+                            onValueClick={(datapoint, { event, innerX, index }) => {
+                                console.log(datapoint);
+                            }} />
+                        <LineMarkSeries
+                            data={this.state.data2}
+                            lineStyle={{
+                                stroke: 'red'
+                            }}
                             markStyle={{
                                 fill: 'red'
                             }}

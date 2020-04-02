@@ -42,6 +42,7 @@ class Sessions extends Component {
                         compId={this.props.compId}
                         update={this.setSessionData}
                         sessions={this.state.sessions}
+                        setScene={this.props.setScene}
                     />
                 }
             </Aux>

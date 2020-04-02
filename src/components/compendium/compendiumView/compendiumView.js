@@ -41,6 +41,7 @@ const CompendiumView = (props) => {
             <hr />
             <Sessions
                 compId={compData.stateComp.id}
+                setScene={props.setScene}
             />
         </Aux>
     );

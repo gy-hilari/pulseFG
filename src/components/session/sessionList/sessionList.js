@@ -13,9 +13,14 @@ const SessionList = (props) => {
                     return (
                         <Aux key={session.id}>
                             <div className="session-card">
-                                <p className="session-text">{session.name}</p>
-                                <p className="session-text">{session.unitOfMeasure}</p>
-                                <p className="session-text">{new Date(session.createdAt).toISOString().split('T')[0]}</p>
+                                <span onClick={() => {
+                                    sessionContext.setSession(session);
+                                    props.setScene('session');
+                                }}>
+                                    <p className="session-text">{session.name}</p>
+                                    <p className="session-text">{session.unitOfMeasure}</p>
+                                    <p className="session-text">{new Date(session.createdAt).toISOString().split('T')[0]}</p>
+                                </span>
                                 <p className="session-delete" onClick={() => {
                                     API.deleteSessionById(
                                         { sessionId: session.id, compId: props.compId },
