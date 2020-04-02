@@ -15,7 +15,7 @@ const CompendiumView = (props) => {
             (res) => refreshComp(res)
         );
     }
-
+    
     const refreshComp = (updatedComp) => {
         compData.setComp(updatedComp);
         compEditMode(null);
