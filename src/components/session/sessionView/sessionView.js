@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { SessionContext } from '../../../containers/sceneManager/sceneManager';
 import Aux from '../../../hoc/Auxi';
 import * as API from '../../../containers/sessions/sessionsAPI';
-import PulseGraph from '../../pulseGraph/pulseGraph';
+import Matches from '../../../containers/matches/matches';
 import './sessionView.css';
 
 const SessionView = (props) => {
@@ -39,7 +39,7 @@ const SessionView = (props) => {
             }
             <hr />
             <p>{`Measuring: ${sessionData.stateSession.unitOfMeasure}`}</p>
-            <PulseGraph />
+            <Matches session={sessionData.stateSession}/>
         </Aux>
     )
 }

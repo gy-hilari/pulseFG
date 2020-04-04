@@ -5,6 +5,7 @@ function SessionController(db) {
 }
 
 SessionController.prototype.GetSessionsByCompId = function (compId) {
+    console.log(compId);
     return new Promise((resolve, reject) => {
         this.db.serialize(() => {
             let stmt = this.db.prepare(

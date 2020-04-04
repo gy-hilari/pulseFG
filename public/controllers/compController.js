@@ -1,7 +1,7 @@
 const uniqid = require('uniqid');
 
 function CompController(db) {
-    this.db = db
+    this.db = db;
 }
 
 CompController.prototype.GetCompendiums = function () {

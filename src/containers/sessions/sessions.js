@@ -33,7 +33,7 @@ class Sessions extends Component {
                     <SessionForm
                         compId={this.props.compId}
                         update={this.setSessionData}
-                        cancel={() => this.setAction(null)}
+                        cancel={() => this.setAction(null)} 
                     />
                 }
                 {

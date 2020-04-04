@@ -22,10 +22,19 @@ exports.CheckOrCreateModels = (db) => {
                 sessionKey: { foreignKey: true, string: 'FOREIGN KEY (session) REFERENCES session(_id)' }
             },
             {
+                tableName: 'measurement',
+                createdAt: { foreignKey: false, string: 'TEXT NOT NULL' },
+                name: { foreignKey: false, string: 'TEXT NOT NULL' },
+                mode: { foreignKey: false, string: 'TEXT NOT NULL' },
+                value: { foreignKey: false, string: 'INT NOT NULL' },
+                pulsegraph: { foreignKey: false, string: 'TEXT NOT NULL' },
+                pulsegraphKey: { foreignKey: true, string: 'FOREIGN KEY (pulsegraph) REFERENCES pulsegraph(_id)' }
+            },
+            {
                 tableName: 'match',
                 createdAt: { foreignKey: false, string: 'TEXT NOT NULL' },
                 name: { foreignKey: false, string: 'TEXT NOT NULL' },
-                result: { foreignKey: false, string: 'INT NOT NULL' },
+                results: { foreignKey: false, string: 'TEXT NOT NULL' },
                 session: { foreignKey: false, string: 'TEXT NOT NULL' },
                 sessionKey: { foreignKey: true, string: 'FOREIGN KEY (session) REFERENCES session(_id)' }
             },

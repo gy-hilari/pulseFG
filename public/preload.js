@@ -15,7 +15,10 @@ contextBridge.exposeInMainWorld(
             "/session/comp",
             "/session/id/delete",
             "/session/post",
-            "/session/put/name"
+            "/session/put/name",
+            "/match/id",
+            "/match/session",
+            "/match/post"
         ];
         if (validChannels.includes(channel)) {
             promiseIpc.send(channel, data).then((res) => { func(res) });

@@ -2,6 +2,7 @@ function SessionRoutes(router, controller) {
     this.controller = controller;
 
     router.on('/session/comp', (compId) => {
+        console.log('calling session get route');
         return new Promise((resolve, reject) => {
             this.controller.GetSessionsByCompId(compId).then((res) => {
                 resolve(res);
@@ -58,16 +59,6 @@ function SessionRoutes(router, controller) {
             });
         });
     });
-
-    // router.on('/session/comp/delete', (compId) => {
-    //     return new Promise((resolve, reject) => {
-    //         this.controller.DeleteSessionByCompId(compId).then((res) => {
-
-    //         }).catch((err) => {
-
-    //         })
-    //     });
-    // });
 }
 
 module.exports = {

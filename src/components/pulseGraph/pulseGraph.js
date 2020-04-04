@@ -8,41 +8,54 @@ const FlexPlot = makeWidthFlexible(XYPlot);
 
 class PulseGraph extends Component {
     state = {
-        data1: this.generateData(5),
-        data2: this.generateData(5),
+        datasets: {},
+        idSet: [],
         focusValue: false,
+        lockGraph: false
     }
 
-    generateData(rowCount) {
-        return [...new Array(rowCount)].map((row, idx) => ({
-            x: idx,
-            y: Math.random() * 1000
-        }));
+    componentDidMount() {
+        this.initializeData();
     }
 
-    pushData(arr) {
-        console.log(arr);
-        arr.push({
-            x: arr.length + 1,
-            y: Math.random() * 1000
+    componentDidUpdate(prevProps) {
+        if (this.props.matchData !== prevProps.matchData) {
+            let lockStatus = this.state.lockGraph;
+            if (!lockStatus) this.setState({ lockGraph: true });
+            this.initializeData();
+            this.setState({ lockGraph: lockStatus });
+        }
+    }
+
+    initializeData = () => {
+        let allSets = {};
+        let idSet = [];
+        this.props.datasets.forEach((set) => {
+            this.props.matchData.forEach((match) => {
+                !allSets[set] ? allSets[set] = [JSON.parse(match.results)[set]] : allSets[set].push(JSON.parse(match.results)[set])
+                idSet.push(match.id);
+            });
         });
-        return arr;
-    };
+        console.log(allSets);
+        let formattedSets = {};
+        for (let key of Object.keys(allSets)) {
+            formattedSets[key] = this.formatData(allSets[key]);
+        }
+        this.setState({ datasets: formattedSets, idSet: idSet });
+    }
+
+    formatData = (set) => { return [...new Array(set.length)].map((elm, idx) => ({ x: idx, y: set[idx] })) }
+
 
     render() {
         return (
             <Aux>
-
-                <button onClick={() =>
-                    this.setState({
-                        data1: this.pushData(this.state.data1),
-                        data2: this.pushData(this.state.data2)
-                    })
-                }>
-                    Update
-                </button>
                 <div className="graph-wrap">
-                    <FlexPlot height={300}>
+                    <p>Lock Graph</p>
+                    <input type="checkbox" defaultValue={this.state.lockGraph} onChange={() => this.setState({ lockGraph: !this.state.lockGraph })} />
+                    <FlexPlot height={300} onClick={() => {
+                        this.props.setMatch(this.state.idSet[this.state.focusValue[0].x]);
+                    }}>
                         <XAxis
                             title="X Axis"
                             style={{
@@ -52,48 +65,34 @@ class PulseGraph extends Component {
                             }}
                         />
                         <YAxis title="Y Axis" />
-                        <LineMarkSeries
-                            data={this.state.data1}
-                            lineStyle={{
-                                stroke: 'green'
-                            }}
-                            markStyle={{
-                                fill: 'green'
-                            }}
-                            animation={'gentle'}
-                            onNearestX={(datapoint, { event, innerX, index }) => {
-                                this.setState({ focusValue: datapoint });
-                            }}
-                            onValueClick={(datapoint, { event, innerX, index }) => {
-                                console.log(datapoint);
-                            }} />
-                        <LineMarkSeries
-                            data={this.state.data2}
-                            lineStyle={{
-                                stroke: 'red'
-                            }}
-                            markStyle={{
-                                fill: 'red'
-                            }}
-                            animation={'gentle'}
-                            onNearestX={(datapoint, { event, innerX, index }) => {
-                                this.setState({ focusValue: datapoint });
-                            }}
-                            onValueClick={(datapoint, { event, innerX, index }) => {
-                                console.log(datapoint);
-                            }} />
+                        {
+                            Object.keys(this.state.datasets).map((set) => {
+                                return (
+                                    <LineMarkSeries
+                                        data={this.state.datasets[set]}
+                                        lineStyle={{
+                                            stroke: 'green'
+                                        }}
+                                        markStyle={{
+                                            fill: 'green'
+                                        }}
+                                        animation={'gentle'}
+                                        onNearestX={(datapoint, { event, innerX, index }) => {
+                                            if (!this.state.lockGraph) {
+                                                this.setState({ focusValue: [datapoint] });
+                                            }
+                                        }}
+                                    />
+                                )
+                            })
+                        }
                         {
                             this.state.focusValue &&
                             <Crosshair
-                                values={[this.state.focusValue]}
-                                titleFormat={(d) => ({ title: 'X', value: d[0].x })}
+                                values={this.state.focusValue}
+                                titleFormat={(d) => ({ title: 'X', value: d[0].x + 1 })}
                                 itemsFormat={(d) =>
-                                    [
-                                        {
-                                            title: 'Y',
-                                            value: d[0].y
-                                        }
-                                    ]
+                                    [{ title: 'Value', value: d[0].y }]
                                 }
                             />
                         }

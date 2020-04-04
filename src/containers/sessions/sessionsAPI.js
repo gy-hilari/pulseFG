@@ -1,4 +1,5 @@
 export const getSessionsByCompId = (compId, callback) => {
+    console.log(`Getting Sessions of ${compId}`);
     window.api.promise('/session/comp', compId, (res) => callback(res));
 }
 
