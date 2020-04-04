@@ -21,14 +21,8 @@ function MatchRoutes(router, controller) {
         return new Promise((resolve, reject) => {
             this.controller.CreateMatch(form).then((res) => {
                 resolve(res);
-                // this.controller.GetMatchesBySessionId(form.sessionId).then((res) => {
-                //     resolve(res);
-                // });/session/comp
             }).catch((err) => {
                 resolve(res);
-                // this.controller.GetMatchesBySessionId(form.sessionId).then((res) => {
-                //     resolve(res);
-                // });
             });
         });
     });

@@ -14,13 +14,18 @@ class Matches extends Component {
         this.initializeMatches();
     }
 
+    /*  
+        BEGIN WORKING ON DYNAMIC JSON FORM FOR MATCH 'RESULTS' FIELD
+    */
+
     initializeMatches = () => API.getMatchesBySessionId(this.props.session.id, (res) => this.setState({ matches: res }));
-    setMatchById = (matchId) => API.getMatchById(matchId, (res) =>  this.setState({ activeMatch: res }));
+    setMatchById = (matchId) => API.getMatchById(matchId, (res) => this.setState({ activeMatch: res }));
     setActiveMatch = (match) => this.setState({ activeMatch: match });
     createMatch = (form) => API.createMatch(form, (res) => { console.log(res) });
 
     render() {
         return (
+
             <Aux>
                 {
                     this.state.matches.length > 0 &&
@@ -53,15 +58,9 @@ class Matches extends Component {
                 }
                 {
                     this.state.activeMatch &&
-
-                    <Aux>
-                        <p>Test</p>
-                        {
-                            Object.keys(this.state.activeMatch).map((key) => {
-                                if(key !== 'results') return <p>{`${key}: ${this.state.activeMatch[key]}`}</p>
-                            })
-                        }
-                    </Aux>
+                    Object.keys(this.state.activeMatch).map((key) => {
+                        if (key !== 'results') return <p>{`${key}: ${this.state.activeMatch[key]}`}</p>
+                    })
                 }
             </Aux>
         );

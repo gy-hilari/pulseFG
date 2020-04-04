@@ -36,7 +36,6 @@ class PulseGraph extends Component {
                 idSet.push(match.id);
             });
         });
-        console.log(allSets);
         let formattedSets = {};
         for (let key of Object.keys(allSets)) {
             formattedSets[key] = this.formatData(allSets[key]);
