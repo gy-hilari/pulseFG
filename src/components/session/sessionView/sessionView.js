@@ -38,7 +38,6 @@ const SessionView = (props) => {
                 </Aux>
             }
             <hr />
-            <p>{`Measuring: ${sessionData.stateSession.unitOfMeasure}`}</p>
             <Matches session={sessionData.stateSession}/>
         </Aux>
     )

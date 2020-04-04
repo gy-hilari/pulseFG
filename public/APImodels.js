@@ -10,7 +10,6 @@ exports.CheckOrCreateModels = (db) => {
                 tableName: 'session',
                 createdAt: { foreignKey: false, string: 'TEXT NOT NULL' },
                 name: { foreignKey: false, string: 'TEXT NOT NULL' },
-                unitOfMeasure: { foreignKey: false, string: 'TEXT NOT NULL' },
                 comp: { foreignKey: false, string: 'TEXT NOT NULL' },
                 compKey: { foreignKey: true, string: 'FOREIGN KEY (comp) REFERENCES comp(_id)' }
             },
@@ -22,13 +21,16 @@ exports.CheckOrCreateModels = (db) => {
                 sessionKey: { foreignKey: true, string: 'FOREIGN KEY (session) REFERENCES session(_id)' }
             },
             {
+                /*
+                    Make foreign key to session table,
+                    pass down as props to match to DICTATE options for results field
+                 */
                 tableName: 'measurement',
                 createdAt: { foreignKey: false, string: 'TEXT NOT NULL' },
                 name: { foreignKey: false, string: 'TEXT NOT NULL' },
                 mode: { foreignKey: false, string: 'TEXT NOT NULL' },
-                value: { foreignKey: false, string: 'INT NOT NULL' },
-                pulsegraph: { foreignKey: false, string: 'TEXT NOT NULL' },
-                pulsegraphKey: { foreignKey: true, string: 'FOREIGN KEY (pulsegraph) REFERENCES pulsegraph(_id)' }
+                session: { foreignKey: false, string: 'TEXT NOT NULL' },
+                sessionKey: { foreignKey: true, string: 'FOREIGN KEY (session) REFERENCES session(_id)' }
             },
             {
                 tableName: 'match',

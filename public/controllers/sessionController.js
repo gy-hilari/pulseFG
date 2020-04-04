@@ -9,7 +9,7 @@ SessionController.prototype.GetSessionsByCompId = function (compId) {
     return new Promise((resolve, reject) => {
         this.db.serialize(() => {
             let stmt = this.db.prepare(
-                `SELECT _id as id, name, unitOfMeasure, createdAt
+                `SELECT _id as id, name, createdAt
                 FROM session WHERE comp = $id ORDER BY createdAt DESC
                 `);
             stmt.all({ $id: compId }, (err, chars) => {
@@ -25,7 +25,7 @@ SessionController.prototype.GetSessionById = function (sessionId) {
     return new Promise((resolve, reject) => {
         this.db.serialize(() => {
             let stmt = this.db.prepare(
-                `SELECT _id as id, name, unitOfMeasure, createdAt
+                `SELECT _id as id, name, createdAt
                 FROM session WHERE _id = $id
                 `);
             stmt.get({ $id: sessionId }, (err, session) => {
@@ -46,14 +46,12 @@ SessionController.prototype.CreateSession = function (form) {
                     _id,
                     name,
                     comp,
-                    unitOfMeasure,
                     createdAt
                 )
                 VALUES (
                     $id,
                     $name,
                     $comp,
-                    $unit,
                     $createdAt
                 )`
             );
@@ -62,7 +60,6 @@ SessionController.prototype.CreateSession = function (form) {
                 $id: sessionId,
                 $name: form.name,
                 $comp: form.compId,
-                $unit: form.unit,
                 $createdAt: new Date(Date.now()).toISOString()
             });
             stmt.finalize();

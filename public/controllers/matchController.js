@@ -37,7 +37,6 @@ MatchController.prototype.GetMatchesBySessionId = function (sessionId) {
 }
 
 MatchController.prototype.CreateMatch = function (form) {
-    console.log('Creating match!');
     return new Promise((resolve, reject) => {
         if (!form.name) reject('Invalid form');
         if (form.name) this.db.serialize(() => {

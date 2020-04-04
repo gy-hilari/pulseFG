@@ -1,0 +1,9 @@
+.session-measure{
+    display: block;
+    margin: 0px auto;
+}
+
+.session-measure input, .session-measure select{
+    display: inline-block;
+    vertical-align: middle;
+}
