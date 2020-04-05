@@ -52,7 +52,7 @@ MeasurementController.prototype.CreateMeasurement = function (form) {
                 $createdAt: new Date(Date.now()).toISOString()
             });
             stmt.finalize();
-            resolve(sessionId);
+            resolve(`Measurment [${measureId} created succsessfully!]`);
         });
     })
 }

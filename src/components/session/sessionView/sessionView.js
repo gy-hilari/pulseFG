@@ -12,7 +12,6 @@ const SessionView = (props) => {
 
     useEffect(() => {
         API.getMeasurementsBySessionId(sessionData.stateSession.id, (res) => {
-            console.log(res);
             measurementsEdit(res);
         });
     }, []);
@@ -48,11 +47,20 @@ const SessionView = (props) => {
             {
                 measurements.length > 0 &&
                 <Aux>
-                    <p>Measurments available!</p>
+                    {
+                        measurements.map((measure) => {
+                            return (
+                                <p>{measure.name}</p>
+                            );
+                        })
+                    }
+                    <hr />
+                    <Matches
+                        session={sessionData.stateSession}
+                        measurements={measurements}
+                    />
                 </Aux>
             }
-            <hr />
-            <Matches session={sessionData.stateSession} />
         </Aux>
     )
 }

@@ -29,6 +29,9 @@ exports.CheckOrCreateModels = (db) => {
                 createdAt: { foreignKey: false, string: 'TEXT NOT NULL' },
                 name: { foreignKey: false, string: 'TEXT NOT NULL' },
                 mode: { foreignKey: false, string: 'TEXT NOT NULL' },
+                /*
+                    MEASUREMENT NEEDS A MAX VALUE IN ORDER FOR BINARY PULSE TO SCALE CORRECTLY
+                */                
                 session: { foreignKey: false, string: 'TEXT NOT NULL' },
                 sessionKey: { foreignKey: true, string: 'FOREIGN KEY (session) REFERENCES session(_id)' }
             },

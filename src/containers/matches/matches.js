@@ -6,22 +6,43 @@ import PulseGraph from '../../components/pulseGraph/pulseGraph';
 class Matches extends Component {
     state = {
         matches: [],
+        measures: {},
         action: null,
         activeMatch: null
     }
 
     componentDidMount() {
         this.initializeMatches();
+        this.generateMeasurements();
     }
 
     /*  
         BEGIN WORKING ON DYNAMIC JSON FORM FOR MATCH 'RESULTS' FIELD
     */
 
+    /* 
+        MEASUREMENT NEEDS A MAX VALUE IN ORDER FOR BINARY PULSE TO SCALE CORRECTLY
+    */
+
     initializeMatches = () => API.getMatchesBySessionId(this.props.session.id, (res) => this.setState({ matches: res }));
     setMatchById = (matchId) => API.getMatchById(matchId, (res) => this.setState({ activeMatch: res }));
     setActiveMatch = (match) => this.setState({ activeMatch: match });
     createMatch = (form) => API.createMatch(form, (res) => { console.log(res) });
+    generateMeasurements = () => {
+        console.log(this.props.measurements);
+        let measures = {};
+        this.props.measurements.forEach(measure => {
+            console.log(measure);
+            measures[measure.id] = this.measurementFormat(measure.mode);
+        });
+        console.log(measures);
+        this.setState({ measures: measures });
+    }
+    measurementFormat = (measurement) => {
+        if (measurement === "score") return Math.random() * 10;
+        if (measurement === "placement") return Math.random() * 10;
+        if (measurement === "binary") return Math.round(Math.random()) * 100;
+    }
 
     render() {
         return (
@@ -41,13 +62,10 @@ class Matches extends Component {
                 {
                     !this.state.action &&
                     <button onClick={() => {
+                        this.generateMeasurements();
                         this.createMatch({
                             name: "test",
-                            results: {
-                                a: Math.random() * 1000,
-                                b: Math.random() * 1000,
-                                c: Math.random() * 1000
-                            },
+                            results: this.state.measures,
                             sessionId: this.props.session.id
                         });
                         this.initializeMatches();
