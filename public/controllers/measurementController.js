@@ -12,10 +12,10 @@ MeasurementController.prototype.GetMeasurementsBySessionId = function (sessionId
                 `SELECT _id as id, name, mode, maximum, session, createdAt
                 FROM measurement WHERE session = $id ORDER BY createdAt
                 `);
-            stmt.all({ $id: sessionId }, (err, session) => {
+            stmt.all({ $id: sessionId }, (err, measurements) => {
                 if (err) reject(err);
-                console.log(session);
-                resolve(session);
+                // console.log(measurements);
+                resolve(measurements);
             });
             stmt.finalize();
         });

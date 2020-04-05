@@ -47,12 +47,10 @@ const SessionForm = (props) => {
 
     const validateMeasurements = () => {
         for (let i = 0; i < measures; i++) {
-            if (
-                !validate(document.getElementById(`session-measure-${i}`).value) ||
-                !validate(document.getElementById(`session-measure-mode-${i}`).value) ||
-                !parseInt(document.getElementById(`session-measure-max`).value)
-            )
+            if (!validate(document.getElementById(`session-measure-${i}`).value) ||!validate(document.getElementById(`session-measure-mode-${i}`).value))
                 return false;
+                let sessionMax = parseInt(document.getElementById(`session-measure-max`).value);
+                if(sessionMax) if(sessionMax < 0) return false;
         }
         return true;
     }

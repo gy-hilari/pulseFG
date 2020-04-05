@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Aux from '../../hoc/Auxi';
 import * as API from './matchesAPI';
 import PulseGraph from '../../components/pulseGraph/pulseGraph';
-import continuousColorLegend from 'react-vis/dist/legends/continuous-color-legend';
 
 class Matches extends Component {
     state = {
@@ -14,43 +13,44 @@ class Matches extends Component {
 
     componentDidMount() {
         this.initializeMatches();
-        this.generateMeasurements();
     }
 
-    /*  
-        BEGIN WORKING ON DYNAMIC JSON FORM FOR MATCH 'RESULTS' FIELD
-    */
-
-    /* 
-        MEASUREMENT NEEDS A MAX VALUE IN ORDER FOR BINARY PULSE TO SCALE CORRECTLY
-    */
-
-    initializeMatches = () => API.getMatchesBySessionId(this.props.session.id, (res) =>{console.log(res); this.setState({ matches: res })});
+    initializeMatches = () => API.getMatchesBySessionId(this.props.session.id, (res) => { console.log(res); this.setState({ matches: res }) });
     setMatchById = (matchId) => API.getMatchById(matchId, (res) => this.setState({ activeMatch: res }));
     setActiveMatch = (match) => this.setState({ activeMatch: match });
     createMatch = (form) => API.createMatch(form, (res) => { console.log(res) });
-    generateMeasurements = () => {
-        console.log(this.props.measurements);
-        let measures = {};
-        this.props.measurements.forEach(measure => {
-            console.log(measure);
-            measures[measure.id] = this.measurementFormat(measure.mode, measure.maximum);
+
+    /* 
+        EXPORT INTO MATCH FORM COMPONENT
+    */
+    formatResults = () => {
+        let results = {};
+        let invalid = false;
+        this.props.measurements.forEach((measure, idx) => {
+            console.log(measure.mode);
+            let value = document.getElementById(`result-value-${idx}`).value;
+            if (measure.mode === "binary") {
+                console.log(value);
+                results[measure.id] = parseInt(value) === measure.maximum ? parseInt(value) : 0;
+            } else {
+                let intVal = parseInt(value);
+                console.log(intVal);
+                if (!intVal) invalid = true;
+                if (intVal > 0 && intVal <= measure.maximum) {
+                    results[measure.id] = intVal;
+                } else {
+                    invalid = true;
+                }
+            }
         });
-        console.log(measures);
-        this.setState({ measures: measures });
-    }
-    measurementFormat = (measurement, maxVal) => {
-        if (measurement === "score") return Math.random() * maxVal;
-        if (measurement === "placement") return Math.random() * maxVal;
-        if (measurement === "binary") return Math.round(Math.random()) * maxVal;
+        return !invalid ? results : false;
     }
 
     render() {
         return (
-
             <Aux>
                 {
-                    this.state.matches.length > 0 &&
+                    !this.state.action && this.state.matches.length > 0 &&
                     <PulseGraph
                         matchData={this.state.matches}
                         datasets={Object.keys(JSON.parse(this.state.matches[0].results))}
@@ -62,24 +62,61 @@ class Matches extends Component {
                 }
                 {
                     !this.state.action &&
-                    <button onClick={() => {
-                        this.generateMeasurements();
-                        this.createMatch({
-                            name: "test",
-                            results: this.state.measures,
-                            sessionId: this.props.session.id
-                        });
-                        this.initializeMatches();
-                    }}>Generate Match</button>
+                    <Aux>
+                        <button onClick={() => this.setState({ action: 'create' })}>Create Match</button>
+                    </Aux>
                 }
                 {
-                    this.state.action === 'create'
-                }
-                {
-                    this.state.activeMatch &&
+                    !this.state.action && this.state.activeMatch &&
                     Object.keys(this.state.activeMatch).map((key) => {
                         if (key !== 'results') return <p>{`${key}: ${this.state.activeMatch[key]}`}</p>
                     })
+                }
+                {
+                    /* 
+                        EXPORT INTO MATCH FORM COMPONENT
+                    */
+
+                    this.state.action === 'create' &&
+                    <Aux>
+                        <input id="match-name" type="text" placeholder="Match Name" />
+                        <hr />
+                        <p style={{ "color": "red" }}>Maximum Value: {this.props.measurements[0].maximum}</p>
+                        {
+                            this.props.measurements.map((measure, idx) => {
+                                return (
+                                    <div>
+                                        <p>{measure.name}</p>
+                                        {
+                                            measure.mode === "binary" ?
+                                                <select id={`result-value-${idx}`}>
+                                                    <option value={measure.maximum}>Positive</option>
+                                                    <option value={"negative"}>Negative</option>
+                                                </select>
+                                                :
+                                                <input id={`result-value-${idx}`} type="text" placeholder="value" />
+                                        }
+                                        <hr />
+                                    </div>
+                                );
+                            })
+                        }
+                        <button onClick={() => {
+                            let formatResults = this.formatResults();
+                            console.log(formatResults);
+                            let matchName = document.getElementById('match-name').value;
+                            if (/\S/.test(matchName) && formatResults) {
+                                this.createMatch({
+                                    name: matchName,
+                                    results: formatResults,
+                                    sessionId: this.props.session.id
+                                });
+                                this.initializeMatches();
+                                this.setState({ action: null });
+                            }
+                        }}>Add Match</button>
+                        <button onClick={() => this.setState({ action: null })}>Cancel</button>
+                    </Aux>
                 }
             </Aux>
         );
