@@ -5,16 +5,15 @@ function SessionController(db) {
 }
 
 SessionController.prototype.GetSessionsByCompId = function (compId) {
-    console.log(compId);
     return new Promise((resolve, reject) => {
         this.db.serialize(() => {
             let stmt = this.db.prepare(
                 `SELECT _id as id, name, createdAt
                 FROM session WHERE comp = $id ORDER BY createdAt DESC
                 `);
-            stmt.all({ $id: compId }, (err, chars) => {
+            stmt.all({ $id: compId }, (err, session) => {
                 if (err) reject(err);
-                resolve(chars);
+                resolve(session);
             });
             stmt.finalize();
         });
@@ -63,7 +62,7 @@ SessionController.prototype.CreateSession = function (form) {
                 $createdAt: new Date(Date.now()).toISOString()
             });
             stmt.finalize();
-            resolve(`Session [${sessionId}] created successfully!`);
+            resolve(sessionId);
         });
     })
 }

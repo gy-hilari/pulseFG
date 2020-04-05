@@ -21,13 +21,9 @@ function SessionRoutes(router, controller) {
     router.on('/session/post', (form) => {
         return new Promise((resolve, reject) => {
             this.controller.CreateSession(form).then((res) => {
-                this.controller.GetSessionsByCompId(form.compId).then((res) => {
-                    resolve(res);
-                });
+                resolve(res);
             }).catch((err) => {
-                this.controller.GetSessionsByCompId(form.compId).then((res) => {
-                    resolve(res);
-                });
+                console.log(err);
             });
         });
     });

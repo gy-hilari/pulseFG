@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { SessionContext } from '../../../containers/sceneManager/sceneManager';
 import Aux from '../../../hoc/Auxi';
 import * as API from '../../../containers/sessions/sessionsAPI';
@@ -8,6 +8,14 @@ import './sessionView.css';
 const SessionView = (props) => {
     const sessionData = useContext(SessionContext);
     const [sessionEdit, sessionEditMode] = useState(null);
+    const [measurements, measurementsEdit] = useState([]);
+
+    useEffect(() => {
+        API.getMeasurementsBySessionId(sessionData.stateSession.id, (res) => {
+            console.log(res);
+            measurementsEdit(res);
+        });
+    }, []);
 
     const updateSessionName = () => {
         API.updateSessionName(
@@ -37,8 +45,14 @@ const SessionView = (props) => {
                     <button onClick={() => sessionEditMode(null)}>Cancel</button>
                 </Aux>
             }
+            {
+                measurements.length > 0 &&
+                <Aux>
+                    <p>Measurments available!</p>
+                </Aux>
+            }
             <hr />
-            <Matches session={sessionData.stateSession}/>
+            <Matches session={sessionData.stateSession} />
         </Aux>
     )
 }
