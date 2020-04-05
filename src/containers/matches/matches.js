@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Aux from '../../hoc/Auxi';
 import * as API from './matchesAPI';
 import PulseGraph from '../../components/pulseGraph/pulseGraph';
+import continuousColorLegend from 'react-vis/dist/legends/continuous-color-legend';
 
 class Matches extends Component {
     state = {
@@ -24,7 +25,7 @@ class Matches extends Component {
         MEASUREMENT NEEDS A MAX VALUE IN ORDER FOR BINARY PULSE TO SCALE CORRECTLY
     */
 
-    initializeMatches = () => API.getMatchesBySessionId(this.props.session.id, (res) => this.setState({ matches: res }));
+    initializeMatches = () => API.getMatchesBySessionId(this.props.session.id, (res) =>{console.log(res); this.setState({ matches: res })});
     setMatchById = (matchId) => API.getMatchById(matchId, (res) => this.setState({ activeMatch: res }));
     setActiveMatch = (match) => this.setState({ activeMatch: match });
     createMatch = (form) => API.createMatch(form, (res) => { console.log(res) });
@@ -33,15 +34,15 @@ class Matches extends Component {
         let measures = {};
         this.props.measurements.forEach(measure => {
             console.log(measure);
-            measures[measure.id] = this.measurementFormat(measure.mode);
+            measures[measure.id] = this.measurementFormat(measure.mode, measure.maximum);
         });
         console.log(measures);
         this.setState({ measures: measures });
     }
-    measurementFormat = (measurement) => {
-        if (measurement === "score") return Math.random() * 10;
-        if (measurement === "placement") return Math.random() * 10;
-        if (measurement === "binary") return Math.round(Math.random()) * 100;
+    measurementFormat = (measurement, maxVal) => {
+        if (measurement === "score") return Math.random() * maxVal;
+        if (measurement === "placement") return Math.random() * maxVal;
+        if (measurement === "binary") return Math.round(Math.random()) * maxVal;
     }
 
     render() {
@@ -69,7 +70,7 @@ class Matches extends Component {
                             sessionId: this.props.session.id
                         });
                         this.initializeMatches();
-                    }}>Add Match</button>
+                    }}>Generate Match</button>
                 }
                 {
                     this.state.action === 'create'

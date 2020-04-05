@@ -37,6 +37,7 @@ const SessionForm = (props) => {
                 {
                     name: document.getElementById(`session-measure-${i}`).value,
                     mode: document.getElementById(`session-measure-mode-${i}`).value,
+                    maximum: document.getElementById(`session-measure-max`).value,
                     sessionId: sessionId
                 },
                 () => { }
@@ -46,7 +47,11 @@ const SessionForm = (props) => {
 
     const validateMeasurements = () => {
         for (let i = 0; i < measures; i++) {
-            if (!validate(document.getElementById(`session-measure-${i}`).value) || !validate(document.getElementById(`session-measure-mode-${i}`).value))
+            if (
+                !validate(document.getElementById(`session-measure-${i}`).value) ||
+                !validate(document.getElementById(`session-measure-mode-${i}`).value) ||
+                !parseInt(document.getElementById(`session-measure-max`).value)
+            )
                 return false;
         }
         return true;
@@ -56,6 +61,7 @@ const SessionForm = (props) => {
         <Aux>
             <input id="session-name" type="text" placeholder="Session Name" />
             <hr />
+            <input id={`session-measure-max`} className="session-measure" type="text" placeholder="Measurement Maximum" />
             <button onClick={() => setMeasures(measures + 1)}>Add Measurement</button>
             <button onClick={() => measures - 1 > 0 ? setMeasures(measures - 1) : null}>Remove Measurement</button>
             {

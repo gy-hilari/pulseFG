@@ -9,7 +9,7 @@ MeasurementController.prototype.GetMeasurementsBySessionId = function (sessionId
     return new Promise((resolve, reject) => {
         this.db.serialize(() => {
             let stmt = this.db.prepare(
-                `SELECT _id as id, name, mode, session, createdAt
+                `SELECT _id as id, name, mode, maximum, session, createdAt
                 FROM measurement WHERE session = $id ORDER BY createdAt
                 `);
             stmt.all({ $id: sessionId }, (err, session) => {
@@ -32,6 +32,7 @@ MeasurementController.prototype.CreateMeasurement = function (form) {
                     _id,
                     name,
                     mode,
+                    maximum,
                     session,
                     createdAt
                 )
@@ -39,6 +40,7 @@ MeasurementController.prototype.CreateMeasurement = function (form) {
                     $id,
                     $name,
                     $mode,
+                    $maximum,
                     $session,
                     $createdAt
                 )`
@@ -48,6 +50,7 @@ MeasurementController.prototype.CreateMeasurement = function (form) {
                 $id: measureId,
                 $name: form.name,
                 $mode: form.mode,
+                $maximum: form.maximum,
                 $session: form.sessionId,
                 $createdAt: new Date(Date.now()).toISOString()
             });
