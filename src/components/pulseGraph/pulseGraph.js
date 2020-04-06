@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Aux from '../../hoc/Auxi';
 import './pulseGraph.css';
 import '../../../node_modules/react-vis/dist/style.css';
-import { XYPlot, XAxis, YAxis, LineMarkSeries, makeHeightFlexible, makeWidthFlexible, Hint, Crosshair } from 'react-vis';
+import { XYPlot, XAxis, YAxis, LineMarkSeries, makeWidthFlexible, Crosshair } from 'react-vis';
 
 const FlexPlot = makeWidthFlexible(XYPlot);
 
@@ -68,6 +68,7 @@ class PulseGraph extends Component {
                             Object.keys(this.state.datasets).map((set) => {
                                 return (
                                     <LineMarkSeries
+                                        key={`dataset-${set}`}
                                         data={this.state.datasets[set]}
                                         lineStyle={{
                                             stroke: 'green'
@@ -76,7 +77,7 @@ class PulseGraph extends Component {
                                             fill: 'green'
                                         }}
                                         animation={'gentle'}
-                                        onNearestX={(datapoint, { event, innerX, index }) => {
+                                        onNearestX={(datapoint) => {
                                             if (!this.state.lockGraph) {
                                                 this.setState({ focusValue: [datapoint] });
                                             }

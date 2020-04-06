@@ -6,7 +6,7 @@ import Matches from '../../../containers/matches/matches';
 import './sessionView.css';
 
 const SessionView = (props) => {
-    const sessionData = useContext(SessionContext);
+    const sessionData = useContext(SessionContext);  
     const [sessionEdit, sessionEditMode] = useState(null);
     const [measurements, measurementsEdit] = useState([]);
 
@@ -14,7 +14,7 @@ const SessionView = (props) => {
         API.getMeasurementsBySessionId(sessionData.stateSession.id, (res) => {
             measurementsEdit(res);
         });
-    }, []);
+    }, [sessionData.stateSession.id]);
 
     const updateSessionName = () => {
         API.updateSessionName(

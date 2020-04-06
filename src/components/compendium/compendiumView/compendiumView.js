@@ -7,7 +7,7 @@ import './compendiumView.css';
 
 const CompendiumView = (props) => {
     const compData = useContext(CompContext);
-    const [compName, compRename] = useState(compData.stateComp.name);
+    // const [compName, compRename] = useState(compData.stateComp.name);
     const [compEdit, compEditMode] = useState(null);
 
     const updateComp = () => {

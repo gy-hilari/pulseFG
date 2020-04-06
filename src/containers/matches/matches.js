@@ -44,10 +44,12 @@ class Matches extends Component {
                 {
                     !this.state.action && this.state.activeMatch &&
                     <Aux>
-                        {this.props.measurements.map((measure) => { return <p>{measure.name}</p> })}
+                        {this.props.measurements.map((measure) => { return <p key={measure.id}>{measure.name}</p> })}
                         {
-                            Object.keys(this.state.activeMatch).map((key) => {
-                                if (key !== 'results') return <p>{`${key}: ${this.state.activeMatch[key]}`}</p>
+                            Object.keys(this.state.activeMatch).map((key, idx) => {
+                                return key !== 'results' 
+                                ? <p key={`${this.state.activeMatch.id}-keys-${idx}`}>{`${key}: ${this.state.activeMatch[key]}`}</p>
+                                : null
                             })
                         }
                     </Aux>
