@@ -47,13 +47,6 @@ const SessionView = (props) => {
             {
                 measurements.length > 0 &&
                 <Aux>
-                    {
-                        // measurements.map((measure) => {
-                        //     return (
-                        //         <p>{measure.name}</p>
-                        //     );
-                        // })
-                    }
                     <hr />
                     <Matches
                         session={sessionData.stateSession}
