@@ -44,12 +44,34 @@ class Matches extends Component {
                 {
                     !this.state.action && this.state.activeMatch &&
                     <Aux>
-                        {this.props.measurements.map((measure) => { return <p key={measure.id}>{measure.name}</p> })}
                         {
                             Object.keys(this.state.activeMatch).map((key, idx) => {
-                                return key !== 'results' 
-                                ? <p key={`${this.state.activeMatch.id}-keys-${idx}`}>{`${key}: ${this.state.activeMatch[key]}`}</p>
-                                : null
+                                if (key === "name") return <p key={`${this.state.activeMatch.id}-keys-${idx}`}>{this.state.activeMatch[key]}</p>
+                                if (key === "results") return (
+                                    <Aux key={`${this.state.activeMatch.id}-keys-${idx}`}>
+                                        <hr />
+                                        {
+                                            this.props.measurements.map((measure) => {
+                                                return measure.mode !== 'binary' 
+                                                ? <p key={measure.id}>{`${measure.name} : ${JSON.parse(this.state.activeMatch[key])[measure.id]}`}</p>
+                                                : JSON.parse(this.state.activeMatch[key])[measure.id] === measure.maximum 
+                                                    ? <p key={measure.id}>{`${measure.name} : Positive`}</p>
+                                                    : <p key={measure.id}>{`${measure.name} : Negative`}</p>
+                                            })
+                                        }
+                                    </Aux>
+                                );
+                                return null;
+                                // return key !== 'results'
+                                //     ? <p key={`${this.state.activeMatch.id}-keys-${idx}`}>{`${key} : ${this.state.activeMatch[key]}`}</p>
+                                //     : <Aux key={`${this.state.activeMatch.id}-keys-${idx}`}>
+                                //         <hr />
+                                //         {
+                                //             this.props.measurements.map((measure) => {
+                                //                 return <p key={measure.id}>{`${measure.name} : ${JSON.parse(this.state.activeMatch[key])[measure.id]}`}</p>
+                                //             })
+                                //         }
+                                //     </Aux>
                             })
                         }
                     </Aux>

@@ -35,7 +35,7 @@ const MatchForm = (props) => {
             {
                 props.measurements.map((measure, idx) => {
                     return (
-                        <div>
+                        <div key={measure.id}>
                             <p>{measure.name}</p>
                             {
                                 measure.mode === "binary" ?

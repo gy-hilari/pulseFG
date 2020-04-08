@@ -10,6 +10,7 @@ class PulseGraph extends Component {
     state = {
         datasets: {},
         idSet: [],
+        dateCreatedSet: [],
         focusValue: false,
         lockGraph: false
     }
@@ -29,18 +30,19 @@ class PulseGraph extends Component {
 
     initializeData = () => {
         let allSets = {};
-        let idSet = [];
+        let idSet = [], dateCreatedSet = [];
         this.props.datasets.forEach((set) => {
             this.props.matchData.forEach((match) => {
                 !allSets[set] ? allSets[set] = [JSON.parse(match.results)[set]] : allSets[set].push(JSON.parse(match.results)[set])
                 idSet.push(match.id);
+                dateCreatedSet.push(new Date(match.createdAt).toLocaleString('en-US', { 'dateStyle': 'medium', 'timeStyle': 'short', 'hour12': 'false' }));
             });
         });
         let formattedSets = {};
         for (let key of Object.keys(allSets)) {
             formattedSets[key] = this.formatData(allSets[key]);
         }
-        this.setState({ datasets: formattedSets, idSet: idSet });
+        this.setState({ datasets: formattedSets, idSet: idSet, dateCreatedSet: dateCreatedSet });
     }
 
     formatData = (set) => { return [...new Array(set.length)].map((elm, idx) => ({ x: idx, y: set[idx] })) }
@@ -88,13 +90,11 @@ class PulseGraph extends Component {
                         }
                         {
                             this.state.focusValue &&
-                            <Crosshair
-                                values={this.state.focusValue}
-                                titleFormat={(d) => ({ title: 'X', value: d[0].x + 1 })}
-                                itemsFormat={(d) =>
-                                    [{ title: 'Value', value: d[0].y }]
-                                }
-                            />
+                            <Crosshair values={this.state.focusValue}>
+                                <div style={{ background: 'black', padding: '10px', width: '200px', textAlign: 'center' }}>
+                                    <p>{this.state.dateCreatedSet[this.state.focusValue[0].x]}</p>
+                                </div>
+                            </Crosshair>
                         }
                     </FlexPlot>
                 </div>
