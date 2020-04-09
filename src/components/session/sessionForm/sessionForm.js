@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ChromePicker } from 'react-color';
 import Aux from '../../../hoc/Auxi';
 import * as API from '../../../containers/sessions/sessionsAPI';
 import './sessionForm.css';
@@ -9,6 +10,7 @@ const SessionForm = (props) => {
     }
 
     const [measures, setMeasures] = useState(1);
+    const [measureColor, setMeasureColor] = useState([]);
 
     const measureForms = () => {
         let forms = [];
@@ -27,6 +29,17 @@ const SessionForm = (props) => {
                     <option value="placement">{`placement (lower is better)`}</option>
                     <option value="binary">{`binary (win / loss)`}</option>
                 </select>
+                <div style={{ width: 'max-content', margin: '0px auto' }}>
+                    <ChromePicker
+                        color={measureColor[idx]}
+                        onChangeComplete={(color) => {
+                            console.log(color.hex);
+                            let colorArr = measureColor;
+                            colorArr[idx] = color.hex;
+                            setMeasureColor(colorArr);
+                        }}
+                    />
+                </div>
             </div>
         );
     }
@@ -38,6 +51,7 @@ const SessionForm = (props) => {
                     name: document.getElementById(`session-measure-${i}`).value,
                     mode: document.getElementById(`session-measure-mode-${i}`).value,
                     maximum: document.getElementById(`session-measure-max`).value,
+                    color: measureColor[i] ? measureColor[i] : '#22194D',
                     sessionId: sessionId
                 },
                 () => { }
@@ -47,10 +61,10 @@ const SessionForm = (props) => {
 
     const validateMeasurements = () => {
         for (let i = 0; i < measures; i++) {
-            if (!validate(document.getElementById(`session-measure-${i}`).value) ||!validate(document.getElementById(`session-measure-mode-${i}`).value))
+            if (!validate(document.getElementById(`session-measure-${i}`).value) || !validate(document.getElementById(`session-measure-mode-${i}`).value))
                 return false;
-                let sessionMax = parseInt(document.getElementById(`session-measure-max`).value);
-                if(sessionMax) if(sessionMax < 0) return false;
+            let sessionMax = parseInt(document.getElementById(`session-measure-max`).value);
+            if (sessionMax) if (sessionMax < 0) return false;
         }
         return true;
     }

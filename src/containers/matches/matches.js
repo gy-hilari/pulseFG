@@ -29,6 +29,7 @@ class Matches extends Component {
                     <PulseGraph
                         matchData={this.state.matches}
                         datasets={Object.keys(JSON.parse(this.state.matches[0].results))}
+                        measurements={this.props.measurements}
                         test={"test"}
                         setMatch={this.setMatchById}
                         createMatch={this.createMatch}

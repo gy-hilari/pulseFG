@@ -17,6 +17,7 @@ class PulseGraph extends Component {
 
     componentDidMount() {
         this.initializeData();
+        console.log(this.props.measurements[0].color);
     }
 
     componentDidUpdate(prevProps) {
@@ -67,16 +68,16 @@ class PulseGraph extends Component {
                         />
                         <YAxis title="Y Axis" />
                         {
-                            Object.keys(this.state.datasets).map((set) => {
+                            Object.keys(this.props.measurements).map((measure) => {
                                 return (
                                     <LineMarkSeries
-                                        key={`dataset-${set}`}
-                                        data={this.state.datasets[set]}
+                                        key={`dataset-${this.props.measurements[measure].id}`}
+                                        data={this.state.datasets[this.props.measurements[measure].id]}
                                         lineStyle={{
-                                            stroke: 'green'
+                                            stroke: this.props.measurements[measure].color
                                         }}
                                         markStyle={{
-                                            fill: 'green'
+                                            fill: this.props.measurements[measure].color
                                         }}
                                         animation={'gentle'}
                                         onNearestX={(datapoint) => {
@@ -88,6 +89,7 @@ class PulseGraph extends Component {
                                 )
                             })
                         }
+
                         {
                             this.state.focusValue &&
                             <Crosshair values={this.state.focusValue}>

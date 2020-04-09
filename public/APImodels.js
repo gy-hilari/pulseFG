@@ -26,6 +26,7 @@ exports.CheckOrCreateModels = (db) => {
                 name: { foreignKey: false, string: 'TEXT NOT NULL' },
                 mode: { foreignKey: false, string: 'TEXT NOT NULL' },
                 maximum: { foreignKey: false, string: 'INT NOT NULL' },
+                color: { foreignKey: false, string: 'TEXT NOT NULL' },
                 session: { foreignKey: false, string: 'TEXT NOT NULL' },
                 sessionKey: { foreignKey: true, string: 'FOREIGN KEY (session) REFERENCES session(_id)' }
             },
