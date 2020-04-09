@@ -20,7 +20,7 @@ const SessionForm = (props) => {
 
     const pushMeasureForm = (idx) => {
         return (
-            <div className="session-measure">
+            <div key={`measure-form-${idx}`} className="session-measure">
                 <input id={`session-measure-${idx}`} className="session-measure" type="text" placeholder="Measurement Name" />
                 <select id={`session-measure-mode-${idx}`}>
                     <option value="score">{`score (higher is better)`}</option>
