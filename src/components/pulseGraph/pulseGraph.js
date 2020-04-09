@@ -17,7 +17,6 @@ class PulseGraph extends Component {
 
     componentDidMount() {
         this.initializeData();
-        console.log(this.props.measurements[0].color);
     }
 
     componentDidUpdate(prevProps) {

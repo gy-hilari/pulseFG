@@ -14,7 +14,6 @@ MeasurementController.prototype.GetMeasurementsBySessionId = function (sessionId
                 `);
             stmt.all({ $id: sessionId }, (err, measurements) => {
                 if (err) reject(err);
-                // console.log(measurements);
                 resolve(measurements);
             });
             stmt.finalize();

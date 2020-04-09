@@ -12,7 +12,6 @@ const SessionView = (props) => {
 
     useEffect(() => {
         API.getMeasurementsBySessionId(sessionData.stateSession.id, (res) => {
-            console.log(res);
             measurementsEdit(res);
         });
     }, [sessionData.stateSession.id]);

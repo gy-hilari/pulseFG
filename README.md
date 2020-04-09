@@ -54,6 +54,7 @@
     - [Class vs. Function Usage](https://www.taniarascia.com/using-context-api-in-react/)
     - [Wes Bos Video Demo](https://www.youtube.com/watch?v=XLJN4JfniH4)
     - [State in function components w/ Hooks](https://reactjs.org/docs/hooks-state.html)
+- [React-Color](https://casesandberg.github.io/react-color/)
 ---
 ## React-Vis Resources
 - When handling react-vis events, be mindful of how many times they call (ex: on every mouse move). With this in mind, I've kept a lot of data relevant to react-vis events as arrays in state. This allows me to have O(1) access to these fields via the x-axis value.
