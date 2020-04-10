@@ -53,11 +53,11 @@ class Matches extends Component {
                                         <hr />
                                         {
                                             this.props.measurements.map((measure) => {
-                                                return measure.mode !== 'binary' 
-                                                ? <p key={measure.id}>{`${measure.name} : ${JSON.parse(this.state.activeMatch[key])[measure.id]}`}</p>
-                                                : JSON.parse(this.state.activeMatch[key])[measure.id] === measure.maximum 
-                                                    ? <p key={measure.id}>{`${measure.name} : Positive`}</p>
-                                                    : <p key={measure.id}>{`${measure.name} : Negative`}</p>
+                                                return measure.mode !== 'binary'
+                                                    ? <p style={{ border: `2px solid ${measure.color}`, padding: '5px', width: 'max-content', margin: '5px auto' }} key={measure.id}> <span style={{fontWeight: 'bold'}}>{`${measure.name} : `}</span> {`${JSON.parse(this.state.activeMatch[key])[measure.id]}`}</p>
+                                                    : JSON.parse(this.state.activeMatch[key])[measure.id] === measure.maximum
+                                                        ? <p style={{ border: `2px solid ${measure.color}`, padding: '5px', width: 'max-content', margin: '5px auto' }} key={measure.id}> <span style={{fontWeight: 'bold'}}>{`${measure.name} : `}</span> {`Positive`}</p>
+                                                        : <p style={{ border: `2px solid ${measure.color}`, padding: '5px', width: 'max-content', margin: '5px auto' }} key={measure.id}> <span style={{fontWeight: 'bold'}}>{`${measure.name} : `}</span> {`Negative`}</p>
                                             })
                                         }
                                     </Aux>

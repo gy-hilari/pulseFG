@@ -5,7 +5,6 @@ function MeasurementController(db) {
 }
 
 MeasurementController.prototype.GetMeasurementsBySessionId = function (sessionId) {
-    console.log(`Getting measurements of session [${sessionId}]`)
     return new Promise((resolve, reject) => {
         this.db.serialize(() => {
             let stmt = this.db.prepare(

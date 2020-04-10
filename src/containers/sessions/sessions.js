@@ -37,7 +37,7 @@ class Sessions extends Component {
                     />
                 }
                 {
-                    this.state.sessions.length > 0 &&
+                    !this.state.action&& this.state.sessions.length > 0 &&
                     <SessionList
                         compId={this.props.compId}
                         update={this.setSessionData}
