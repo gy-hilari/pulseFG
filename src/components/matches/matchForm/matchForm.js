@@ -15,9 +15,8 @@ const MatchForm = (props) => {
             if (measure.mode === "binary") {
                 results[measure.id] = parseInt(value) === measure.maximum ? parseInt(value) : 0;
             } else {
-                let intVal = parseInt(value);
-                if (!intVal) invalid = true;
-                if (intVal > 0 && intVal <= measure.maximum) {
+                let intVal = parseInt(value); // parseInt returns NaN upon error FML!!!!!!!!!!! 
+                if (!isNaN(intVal) && !(intVal < 0) && intVal <= measure.maximum) {
                     results[measure.id] = intVal;
                 } else {
                     invalid = true;
@@ -26,7 +25,7 @@ const MatchForm = (props) => {
         });
         return !invalid ? results : false;
     }
-    
+
     return (
         <Aux>
             <input id="match-name" type="text" placeholder="Match Name" />
@@ -53,6 +52,7 @@ const MatchForm = (props) => {
             }
             <button onClick={() => {
                 let formattedResults = formatResults();
+                console.log(formattedResults);
                 let matchName = document.getElementById('match-name').value;
                 if (/\S/.test(matchName) && formattedResults) {
                     props.createMatch({
