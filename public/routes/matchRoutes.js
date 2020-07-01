@@ -26,6 +26,34 @@ function MatchRoutes(router, controller) {
             });
         });
     });
+
+    router.on('/match/id/delete', (form) => {
+        return new Promise((resolve, reject) => {
+            this.controller.DeleteMatchById(form.matchId).then((res) => {
+                this.controller.GetMatchesBySessionId(form.sessionId).then((res) => {
+                    resolve(res);
+                });
+            }).catch((err) => {
+                this.controller.GetMatchesBySessionId(form.sessionId).then((res) => {
+                    resolve(res);
+                });
+            })
+        });
+    });
+
+    // router.on('/match/session/delete', (sessionId) => {
+    //     return new Promise((resolve, reject) => {
+    //         this.controller.DeleteMatchById(form.matchId).then((res) => {
+    //             this.controller.GetMatchesBySessionId(form.sessionId).then((res) => {
+    //                 resolve(res);
+    //             });
+    //         }).catch((err) => {
+    //             this.controller.GetMatchesBySessionId(form.sessionId).then((res) => {
+    //                 resolve(res);
+    //             });
+    //         })
+    //     });
+    // });
 }
 
 module.exports = {

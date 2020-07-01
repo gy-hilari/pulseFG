@@ -17,9 +17,12 @@ class Matches extends Component {
     }
 
     initializeMatches = () => API.getMatchesBySessionId(this.props.session.id, (res) => { console.log(res); this.setState({ matches: res }) });
-    setMatchById = (matchId) => API.getMatchById(matchId, (res) => this.setState({ activeMatch: res }));
-    setActiveMatch = (match) => this.setState({ activeMatch: match });
+    setMatchById = (matchId) => API.getMatchById(matchId, (res) => {
+        // console.log(res.session);
+        this.setState({ activeMatch: res });
+    });
     createMatch = (form) => API.createMatch(form, (res) => { console.log(res) });
+    deleteActiveMatch = (form) => API.deleteMatchById(form, (res) => { this.initializeMatches(); })
 
     render() {
         return (
@@ -54,27 +57,18 @@ class Matches extends Component {
                                         {
                                             this.props.measurements.map((measure) => {
                                                 return measure.mode !== 'binary'
-                                                    ? <p style={{ border: `2px solid ${measure.color}`, padding: '5px', width: 'max-content', margin: '5px auto' }} key={measure.id}> <span style={{fontWeight: 'bold'}}>{`${measure.name} : `}</span> {`${JSON.parse(this.state.activeMatch[key])[measure.id]}`}</p>
+                                                    ? <p style={{ border: `2px solid ${measure.color}`, padding: '5px', width: 'max-content', margin: '5px auto' }} key={measure.id}> <span style={{ fontWeight: 'bold' }}>{`${measure.name} : `}</span> {`${JSON.parse(this.state.activeMatch[key])[measure.id]}`}</p>
                                                     : JSON.parse(this.state.activeMatch[key])[measure.id] === measure.maximum
-                                                        ? <p style={{ border: `2px solid ${measure.color}`, padding: '5px', width: 'max-content', margin: '5px auto' }} key={measure.id}> <span style={{fontWeight: 'bold'}}>{`${measure.name} : `}</span> {`Positive`}</p>
-                                                        : <p style={{ border: `2px solid ${measure.color}`, padding: '5px', width: 'max-content', margin: '5px auto' }} key={measure.id}> <span style={{fontWeight: 'bold'}}>{`${measure.name} : `}</span> {`Negative`}</p>
+                                                        ? <p style={{ border: `2px solid ${measure.color}`, padding: '5px', width: 'max-content', margin: '5px auto' }} key={measure.id}> <span style={{ fontWeight: 'bold' }}>{`${measure.name} : `}</span> {`Positive`}</p>
+                                                        : <p style={{ border: `2px solid ${measure.color}`, padding: '5px', width: 'max-content', margin: '5px auto' }} key={measure.id}> <span style={{ fontWeight: 'bold' }}>{`${measure.name} : `}</span> {`Negative`}</p>
                                             })
                                         }
                                     </Aux>
                                 );
                                 return null;
-                                // return key !== 'results'
-                                //     ? <p key={`${this.state.activeMatch.id}-keys-${idx}`}>{`${key} : ${this.state.activeMatch[key]}`}</p>
-                                //     : <Aux key={`${this.state.activeMatch.id}-keys-${idx}`}>
-                                //         <hr />
-                                //         {
-                                //             this.props.measurements.map((measure) => {
-                                //                 return <p key={measure.id}>{`${measure.name} : ${JSON.parse(this.state.activeMatch[key])[measure.id]}`}</p>
-                                //             })
-                                //         }
-                                //     </Aux>
                             })
                         }
+                        <button onClick={() => this.deleteActiveMatch({matchId: this.state.activeMatch.id, sessionId: this.state.activeMatch.session})}>Delete Match</button>
                     </Aux>
                 }
                 {

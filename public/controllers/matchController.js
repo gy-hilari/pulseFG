@@ -29,6 +29,7 @@ MatchController.prototype.GetMatchesBySessionId = function (sessionId) {
                 `);
             stmt.all({ $id: sessionId }, (err, matches) => {
                 if (err) reject(err);
+                console.log(matches);
                 resolve(matches);
             });
             stmt.finalize();
@@ -69,6 +70,17 @@ MatchController.prototype.CreateMatch = function (form) {
         });
     })
 
+}
+
+MatchController.prototype.DeleteMatchById = function (matchId) {
+    return new Promise((resolve, reject) => {
+        let stmt = this.db.prepare(`DELETE FROM match WHERE _id = $id`);
+        stmt.all({ $id: matchId }, (err) => {
+            if (err) reject(err);
+            resolve(`Deleted match: [${matchId}]`);
+        });
+        stmt.finalize();
+    });
 }
 
 module.exports = {

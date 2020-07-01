@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { SessionContext } from '../../../containers/sceneManager/sceneManager';
 import Aux from '../../../hoc/Auxi';
 import * as API from '../../../containers/sessions/sessionsAPI';
+import { deleteMatchesBySessionId } from '../../../containers/matches/matchesAPI';
 import './sessionList.css';
 
 const SessionList = (props) => {
@@ -21,7 +22,13 @@ const SessionList = (props) => {
                                     <p className="session-text">{session.unitOfMeasure}</p>
                                     <p className="session-text">{new Date(session.createdAt).toISOString().split('T')[0]}</p>
                                 </span>
+                                {/* <p className="session-delete" onClick={() => {
+                                    deleteMatchesBySessionId(session.id, (res) => console.log(res));
+                                }}>
+                                    DELETE MATCHES
+                                </p> */}
                                 <p className="session-delete" onClick={() => {
+                                    deleteMatchesBySessionId(session.id, (res) => console.log(res));
                                     API.deleteSessionById(
                                         { sessionId: session.id, compId: props.compId },
                                         () => API.getSessionsByCompId(props.compId, (res) => props.update(res))

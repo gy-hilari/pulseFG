@@ -19,6 +19,7 @@ contextBridge.exposeInMainWorld(
             "/match/id",
             "/match/session",
             "/match/post",
+            "/match/id/delete",
             "/measure/post",
             "/measure/session"
         ];
