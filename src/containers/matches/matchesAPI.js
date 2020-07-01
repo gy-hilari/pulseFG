@@ -17,7 +17,7 @@ export const deleteMatchById = (form, callback) => {
 
 export const deleteMatchesBySessionId = (sessionId) => {
     getMatchesBySessionId(sessionId, (matches) => {
-        if(matches.length > 0)
-        matches.forEach(match => deleteMatchById({matchId: match.id, sessionId: sessionId}, (res) => console.log(res))); 
+        if (matches.length > 0)
+            matches.forEach(match => deleteMatchById({ matchId: match.id, sessionId: sessionId }, (res) => console.log(res)));
     });
 }

@@ -21,3 +21,10 @@ export const createMeasurement = (form, callback) => {
 export const getMeasurementsBySessionId = (sessionId, callback) => {
     window.api.promise('/measure/session', sessionId, (res) => callback(res));
 }
+
+export const deleteSessionsByCompId = (compId) => {
+    getSessionsByCompId(compId, (sessions) => {
+        if (sessions.length > 0)
+            sessions.forEach(session => deleteSessionById({ sessionId: session.id, compId: compId }, (res) => console.log(res)));
+    });
+}

@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { CompContext } from '../../../containers/sceneManager/sceneManager';
 import Aux from '../../../hoc/Auxi';
 import * as API from '../../../containers/compendiums/compendiumsAPI';
+import { deleteSessionsByCompId } from '../../../containers/sessions/sessionsAPI';
 import './compendiumList.css';
 
 const CompendiumList = (props) => {
@@ -18,7 +19,10 @@ const CompendiumList = (props) => {
                                         compContext.setComp(comp);
                                         props.setScene('comp');
                                     }}>  {`Name: ${comp.name}, Created: ${new Date(comp.createdAt).toLocaleString('en-US', { 'dateStyle': 'medium', 'timeStyle': 'short', 'hour12': 'false' })}`}</p>
-                                <p className="comp-delete" onClick={() => API.deleteComp(comp.id, (res) => props.update(res))}>DELETE</p>
+                                <p className="comp-delete" onClick={() => {
+                                    deleteSessionsByCompId(comp.id);
+                                    API.deleteComp(comp.id, (res) => props.update(res))
+                                }}>DELETE</p>
                             </div>
                         </Aux>
                     );
